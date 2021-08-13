@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import json
 
 input_data = json.load(open("input.json", "r"))
+LAST_PRICE = input_data["last"]
 URL = input_data["url"]
 ZIEL = input_data["price"]
 
@@ -56,7 +57,7 @@ def check_price(url, goal):
     if price<goal:
         return True
     else:
-        return False
+        return price
 
 def main():
     creds = json.load(open("creds.json", "r"))
@@ -67,10 +68,17 @@ def main():
         price = check_price(URL, ZIEL)
     except Exception as e:
         bot.send_message("Fehler, bitte prüfen", notify_false)
-    if price:
+    if price is True:
         bot.send_message("Preis erreicht", notify_true)
+    elif price != LAST_PRICE:
+        remaining = price - ZIEL
+        mes = f"Der Preis hat sich verändert (von {LAST_PRICE}€ zu {price}€), {remaining}€ fehlen noch"
+        bot.send_message(mes, notify_true)
     else:
-        bot.send_message("Preis noch nicht erreicht, arbeit erledigt", notify_false)
+        mes = "Der Preis hat sich nicht verändert."
+        bot.send_message(mes, notify_false)
+    input_data["last"] = price
     print(price)
+    json.dump(input_data, open("input.json", "w"))
 
 main()
