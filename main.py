@@ -14,6 +14,7 @@ class Wrapper():
         working = self.get_me()["ok"]
         if not working:
             raise ValueError("token invalid, please check token")
+
     def get_me(self):
         """
         Comment: Function for testing your auth token
