@@ -1,5 +1,5 @@
 # Requirements:
-The following python modules will be required:
-requests
-BeautifulSoup 4
-json
+The following python modules will be required: <br />
+* requests
+* BeautifulSoup 4
+* json
