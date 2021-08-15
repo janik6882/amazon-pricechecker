@@ -2,8 +2,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
-input_data = json.load(open("input.json", "r"))
+pth = "/home/pi/Amazon_bot/input.json"
+input_data = json.load(open(pth, "r"))
 LAST_PRICE = input_data["last"]
 URL = input_data["url"]
 ZIEL = input_data["price"]
@@ -62,7 +62,8 @@ def check_price(url, goal):
         return price
 
 def main():
-    creds = json.load(open("creds.json", "r"))
+    pth = "/home/pi/Amazon_bot/creds.json"
+    creds = json.load(open(pth, "r"))
     bot = Wrapper(creds["telegram_bot"])
     notify_true = creds["notify_true"]
     notify_false = creds["notify_false"]
