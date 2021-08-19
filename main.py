@@ -57,9 +57,9 @@ def get_price(url):
 def check_price(url, goal):
     price = get_price(url)
     if price<goal:
-        return True
+        return [True, price]
     else:
-        return price
+        return [False, price]
 
 def main():
     pth = "/home/pi/Amazon_bot/creds.json"
@@ -71,15 +71,19 @@ def main():
         price = check_price(URL, ZIEL)
     except Exception as e:
         bot.send_message("Fehler, bitte prüfen", notify_false)
-    if price is True:
-        bot.send_message("Preis erreicht", notify_true)
-    elif price != LAST_PRICE:
-        remaining = price - ZIEL
-        mes = f"Der Preis hat sich verändert (von {LAST_PRICE}€ zu {price}€), {remaining}€ fehlen noch"
+    if price[0] is True:
+        mes = f"Wunschpreis erreicht, Preis beträgt nun {price[1]}€"
         bot.send_message(mes, notify_true)
-    else:
-        mes = "Der Preis hat sich nicht verändert."
         bot.send_message(mes, notify_false)
+    elif price[1] != LAST_PRICE:
+        remaining = price - ZIEL
+        mes = f"Der Preis hat sich verändert (von {LAST_PRICE}€ zu {price[1]}€), {remaining}€ fehlen noch"
+        bot.send_message(mes, notify_true)
+        bot.send_message(mes, notify_false)
+    else:
+        mes = f"Der Preis hat sich nicht verändert und beträgt noch immer {price[1]}€"
+        bot.send_message(mes, notify_false)
+
     input_data["last"] = price
     print(price)
     json.dump(input_data, open("input.json", "w"))
