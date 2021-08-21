@@ -76,7 +76,7 @@ def main():
         bot.send_message(mes, notify_true)
         bot.send_message(mes, notify_false)
     elif price[1] != LAST_PRICE:
-        remaining = price - ZIEL
+        remaining = price[1] - ZIEL
         mes = f"Der Preis hat sich verändert (von {LAST_PRICE}€ zu {price[1]}€), {remaining}€ fehlen noch"
         bot.send_message(mes, notify_true)
         bot.send_message(mes, notify_false)
@@ -84,7 +84,7 @@ def main():
         mes = f"Der Preis hat sich nicht verändert und beträgt noch immer {price[1]}€"
         bot.send_message(mes, notify_false)
 
-    input_data["last"] = price
+    input_data["last"] = price[1]
     print(price)
     json.dump(input_data, open("input.json", "w"))
 
