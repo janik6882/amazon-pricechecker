@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import json
 pth = "/home/pi/Amazon_bot/input.json"
+pth = "input.json"
+# REMOVE: for rpi usage
 input_data = json.load(open(pth, "r"))
 LAST_PRICE = input_data["last"]
 URL = input_data["url"]
@@ -47,7 +49,7 @@ class Wrapper():
         return json.loads(r.content)
 
 def get_price(url):
-    r = requests.get(url, headers={"User-Agent":"Defined"})
+    r = requests.get(url, headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0"})
     html = r.content
     parsed = BeautifulSoup(html, 'html.parser')
     price = parsed.find("span", {"class": "a-size-medium a-color-price priceBlockBuyingPriceString"}, text=True)
@@ -63,17 +65,19 @@ def check_price(url, goal):
 
 def main():
     pth = "/home/pi/Amazon_bot/creds.json"
+    pth = "creds.json"
+    # REMOVE: for rpi usage
     creds = json.load(open(pth, "r"))
     bot = Wrapper(creds["telegram_bot"])
     notify_true = creds["notify_true"]
     notify_false = creds["notify_false"]
-    try:
-        price = check_price(URL, ZIEL)
-    except Exception as e:
-        bot.send_message("Fehler, bitte prüfen", notify_false)
-        bot.send_message(e, notify_false)
-        print(str(e))
-        exit()
+    # try:
+    price = check_price(URL, ZIEL)
+    # except Exception as e:
+    #     bot.send_message("Fehler, bitte prüfen", notify_false)
+    #     bot.send_message(e, notify_false)
+    #     print(str(e))
+    #     exit()
     if price[0] is True:
         mes = f"Wunschpreis erreicht, Preis beträgt nun {price[1]}€"
         bot.send_message(mes, notify_true)
