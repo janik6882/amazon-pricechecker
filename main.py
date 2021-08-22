@@ -71,6 +71,9 @@ def main():
         price = check_price(URL, ZIEL)
     except Exception as e:
         bot.send_message("Fehler, bitte prüfen", notify_false)
+        bot.send_message(e, notify_false)
+        print(str(e))
+        exit()
     if price[0] is True:
         mes = f"Wunschpreis erreicht, Preis beträgt nun {price[1]}€"
         bot.send_message(mes, notify_true)
