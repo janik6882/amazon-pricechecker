@@ -3,8 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 pth = "/home/pi/Amazon_bot/input.json"
-pth = "input.json"
-# REMOVE: for rpi usage
 input_data = json.load(open(pth, "r"))
 LAST_PRICE = input_data["last"]
 URL = input_data["url"]
@@ -65,8 +63,6 @@ def check_price(url, goal):
 
 def main():
     pth = "/home/pi/Amazon_bot/creds.json"
-    pth = "creds.json"
-    # REMOVE: for rpi usage
     creds = json.load(open(pth, "r"))
     bot = Wrapper(creds["telegram_bot"])
     notify_true = creds["notify_true"]
